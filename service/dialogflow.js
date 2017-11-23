@@ -44,7 +44,7 @@ module.exports = class ServiceDialogflow {
     }
 
     static add_sentence(intent_id, sentence){
-        return ServiceApiai.get_intent(intent_id).then(
+        return ServiceDialogflow.get_intent(intent_id).then(
             (intent) => {
                 let url = URL_BASE + "/intents/" + intent_id + "?v=20150910";
                 let headers = {
