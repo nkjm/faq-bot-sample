@@ -82,11 +82,11 @@ module.exports = class SkillHumanReply {
                         });
                     } else if (value == "既存" || value == "わからない"){
                         // Let admin select the intent to add new expression.
-                        return this._collect_intent_id().then((response) => {
+                        return this._collect_intent_id(bot, context).then((response) => {
                             return resolve();
                         });
                     }
-                    
+
                     return reject();
                 }
             },
