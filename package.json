@@ -1,0 +1,28 @@
+{
+  "name": "faq-bot",
+  "version": "1.0.0",
+  "description": "Sample Chatbot implementation for FAQ purpose",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nkjm/faq-bot.git"
+  },
+  "keywords": [
+    "bot",
+    "chatbot",
+    "line"
+  ],
+  "author": "Kazuki Nakajima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nkjm/faq-bot/issues"
+  },
+  "homepage": "https://github.com/nkjm/faq-bot#readme",
+  "dependencies": {
+    "bot-express": "0.0.133",
+    "express": "^4.16.2"
+  }
+}
