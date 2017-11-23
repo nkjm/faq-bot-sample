@@ -167,6 +167,7 @@ module.exports = class SkillHumanReply {
             }
             message.text += `${offset} 新しいQ&Aとして登録`;
             bot.change_message_to_confirm("intent_id", message);
+            bot.collect("intent_id");
 
             return;
         });
