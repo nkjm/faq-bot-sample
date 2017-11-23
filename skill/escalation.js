@@ -23,7 +23,7 @@ module.exports = class SkillEscalation {
         tasks.push(bot.reply({
             type: "text",
             text: "すぐ調べます。ちょっとお待ちを。"
-        });
+        }));
 
         // Send escalation message to admin.
         let messages_to_admin = [];
