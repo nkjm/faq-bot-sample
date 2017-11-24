@@ -50,7 +50,7 @@ module.exports = class SkillEscalation {
                         type: "buttons",
                         text: `さて、どうしますか？`,
                         actions: [
-                            {type: "postback", label: "返信する", data: `${bot.extract_sender_id()} からの次の質問に回答します。 ${orig_message.text}`},
+                            {type: "postback", label: "回答する", data: `${bot.extract_sender_id()} からの次の質問に回答します。 ${orig_message.text}`},
                         ]
                     }
                 });
