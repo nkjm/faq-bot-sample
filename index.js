@@ -17,13 +17,14 @@ server.listen(process.env.PORT || 5000, () => {
 ** Mount bot-express
 */
 server.use("/webhook", bot_express({
-    nlp_options: {
-        client_access_token: process.env.DIALOGFLOW_CLIENT_ACCESS_TOKEN,
-        language: "ja"
+    nlu: {
+        options: {
+            client_access_token: process.env.DIALOGFLOW_CLIENT_ACCESS_TOKEN
+        }
     },
     line_channel_secret: process.env.LINE_CHANNEL_SECRET,
-    line_channel_access_token: process.env.LINE_ACCESS_TOKEN,
-    default_skill: process.env.DEFAULT_SKILL
+    line_access_token: process.env.LINE_ACCESS_TOKEN,
+    default_skill: process.env.DEFAULT_SKILL,
 }));
 
 module.exports = server;
