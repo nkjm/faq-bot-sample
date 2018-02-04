@@ -6,10 +6,6 @@ const SUPPORTED_MESSAGE_TYPES = ["text", "sticker", "location"];
 Promise = require("bluebird");
 
 module.exports = class SkillEscalation {
-    constructor(){
-        this.clear_context_on_finish = true;
-    }
-
     finish(bot, event, context, resolve, reject){
 
         if (!SUPPORTED_MESSAGE_TYPES.includes(event.message.type)){
@@ -34,6 +30,10 @@ module.exports = class SkillEscalation {
                 return bot.plugin.line.sdk.getProfile(bot.extract_sender_id());
             })
             .then((response) => {
+                if (!response){
+                    return Promise.reject(new Error(`Sender user not found.`));
+                }
+
                 messages_to_admin.push({
                     type: "text",
                     text: `${response.displayName}さんからいただいた次のメッセージがわかりませんでした。`
@@ -49,9 +49,21 @@ module.exports = class SkillEscalation {
                     template: {
                         type: "buttons",
                         text: `さて、どうしますか？`,
-                        actions: [
-                            {type: "postback", label: "回答する", data: `${bot.extract_sender_id()} からの次の質問に回答します。 ${orig_message.text}`},
-                        ]
+                        actions: [{
+                            type: "postback",
+                            label: "回答する",
+                            data: JSON.stringify({
+                                _type: "intent",
+                                intent: {
+                                    name: "human-response",
+                                    parameters: {
+                                        user_id: bot.extract_sender_id(),
+                                        question: orig_message.text
+                                    }
+                                },
+                                language: context.sender_language
+                            })
+                        }]
                     }
                 });
 
@@ -62,6 +74,8 @@ module.exports = class SkillEscalation {
 
         return Promise.all(tasks).then((response) => {
             return resolve();
+        }).catch((error) => {
+            return reject();
         });
     }
 };

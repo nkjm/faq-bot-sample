@@ -4,7 +4,7 @@
   "description": "Sample Chatbot implementation for FAQ purpose",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha --exit"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,12 @@
   },
   "homepage": "https://github.com/nkjm/faq-bot#readme",
   "dependencies": {
-    "bot-express": "^0.1.14",
+    "bot-express": "^0.1.16",
     "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.0.0"
   }
 }

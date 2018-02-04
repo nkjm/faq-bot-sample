@@ -5,7 +5,7 @@ const debug = require("debug")("bot-express:skill");
 const dialogflow = require("../service/dialogflow.js");
 const SKIP_INTENT_LIST = ["Default Fallback Intent", "Default Welcome Intent", "escalation", "human-response", "robot-response"];
 
-module.exports = class SkillHumanReply {
+module.exports = class SkillHumanResponse {
 
     constructor(){
         this.required_parameter = {
@@ -13,6 +13,7 @@ module.exports = class SkillHumanReply {
             question: {},
             answer: {
                 message_to_confirm: {
+                    type: "text",
                     text: "では回答をお願いします。"
                 }
             },
@@ -137,8 +138,6 @@ module.exports = class SkillHumanReply {
                 }
             }
         }
-
-        this.clear_context_on_finish = true;
     }
 
     _collect_intent_id(bot, context){
