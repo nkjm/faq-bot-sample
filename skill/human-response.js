@@ -32,7 +32,7 @@ module.exports = class SkillHumanResponse {
                     }
                 },
                 parser: (value, bot, event, context, resolve, reject) => {
-                    return parse(context.sender_language, "yes_no", value, ["はい","いいえ"], resolve, reject);
+                    return parse.by_nlu_with_list(context.sender_language, "yes_no", value, ["はい","いいえ"], resolve, reject);
                 },
                 reaction: (error, value, bot, event, context, resolve, reject) => {
                     if (error) return resolve();
@@ -61,7 +61,7 @@ module.exports = class SkillHumanResponse {
                     }
                 },
                 parser: (value, bot, event, context, resolve, reject) => {
-                    return parse(context.sender_language, "is_new_intent", value, ["新規","既存","わからない"], resolve, reject);
+                    return parse.by_nlu_with_list(context.sender_language, "is_new_intent", value, ["新規","既存","わからない"], resolve, reject);
                 },
                 reaction: (error, value, bot, event, context, resolve, reject) => {
                     if (error) return resolve();
