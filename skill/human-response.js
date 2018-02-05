@@ -3,7 +3,7 @@
 Promise = require("bluebird");
 const debug = require("debug")("bot-express:skill");
 const dialogflow = require("../service/dialogflow.js");
-const parse = require("parser");
+const parse = require("../service/parser");
 const SKIP_INTENT_LIST = ["Default Fallback Intent", "Default Welcome Intent", "escalation", "human-response", "robot-response"];
 
 module.exports = class SkillHumanResponse {
