@@ -3,6 +3,7 @@
 Promise = require("bluebird");
 const debug = require("debug")("bot-express:skill");
 const dialogflow = require("../service/dialogflow.js");
+const parse = require("parser");
 const SKIP_INTENT_LIST = ["Default Fallback Intent", "Default Welcome Intent", "escalation", "human-response", "robot-response"];
 
 module.exports = class SkillHumanResponse {
@@ -31,16 +32,11 @@ module.exports = class SkillHumanResponse {
                     }
                 },
                 parser: (value, bot, event, context, resolve, reject) => {
-                    if (value == "はい"){
-                        return resolve(true);
-                    } else if (value == "いいえ"){
-                        return resolve(false);
-                    }
-                    return reject();
+                    return parse(context.sender_language, "yes_no", value, ["はい","いいえ"], resolve, reject);
                 },
                 reaction: (error, value, bot, event, context, resolve, reject) => {
                     if (error) return resolve();
-                    if (!value) return resolve();
+                    if (value === "いいえ") return resolve();
 
                     // Ask if admin wants to create new intent or add this question to existing intent as new expression.
                     bot.collect("is_new_intent");
@@ -64,10 +60,13 @@ module.exports = class SkillHumanResponse {
                         ]
                     }
                 },
+                parser: (value, bot, event, context, resolve, reject) => {
+                    return parse(context.sender_language, "is_new_intent", value, ["新規","既存","わからない"], resolve, reject);
+                },
                 reaction: (error, value, bot, event, context, resolve, reject) => {
                     if (error) return resolve();
 
-                    if (value == "新規"){
+                    if (value === "新規"){
                         // Create new intent using question and add response using answer.
                         return dialogflow.add_intent(
                             context.confirmed.question,
@@ -81,14 +80,12 @@ module.exports = class SkillHumanResponse {
                             });
                             return resolve();
                         });
-                    } else if (value == "既存" || value == "わからない"){
-                        // Let admin select the intent to add new expression.
-                        return this._collect_intent_id(bot, context).then((response) => {
-                            return resolve();
-                        });
                     }
 
-                    return reject();
+                    // Let admin select the intent to add new expression.
+                    return this._collect_intent_id(bot, context).then((response) => {
+                        return resolve();
+                    });
                 }
             },
             intent_id: {
