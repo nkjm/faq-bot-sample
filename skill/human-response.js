@@ -138,6 +138,8 @@ module.exports = class SkillHumanResponse {
                 }
             }
         }
+
+        this.clear_context_on_finish = (process.env.BOT_EXPRESS_ENV === "test") ? false : true;
     }
 
     _collect_intent_id(bot, context){

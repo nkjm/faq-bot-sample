@@ -6,6 +6,10 @@ const SUPPORTED_MESSAGE_TYPES = ["text", "sticker", "location"];
 Promise = require("bluebird");
 
 module.exports = class SkillEscalation {
+    constructor(){
+        this.clear_context_on_finish = (process.env.BOT_EXPRESS_ENV === "test") ? false : true;
+    }
+
     finish(bot, event, context, resolve, reject){
 
         if (!SUPPORTED_MESSAGE_TYPES.includes(event.message.type)){
