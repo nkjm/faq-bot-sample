@@ -2,6 +2,7 @@
   "name": "Self Learning FAQ Bot",
   "description": "A sample FAQ chatbot with automatic learning feature.",
   "repository": "https://github.com/nkjm/faq-bot-sample",
+  "logo": "https://raw.githubusercontent.com/nkjm/faq-bot-sample/master/image/logo.png",
   "env": {
       "LINE_CHANNEL_SECRET": {
           "description": "Secret key to validate the access to your webhook. You can find it in LINE Developers Console.",
