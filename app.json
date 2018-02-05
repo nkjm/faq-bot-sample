@@ -12,7 +12,7 @@
           "required": true
       },
       "LINE_ADMIN_USER_ID": {
-          "description": "Admin's LINE user id whom Bot escalates the issue.",
+          "description": "Admin's LINE user id whom Bot escalates the question.",
           "required": true
       },
       "DIALOGFLOW_CLIENT_ACCESS_TOKEN": {
@@ -23,17 +23,28 @@
           "description": "Token to add to your API call for Dialogflow as developer. You can find it in agent setting in Dialogflow Console.",
           "required": true
       },
+      "GOOGLE_PROJECT_ID": {
+          "description": "Google Project Id for translation.",
+          "required": false,
+      },
+      "GOOGLE_API_KEY": {
+          "description": "Google API Key for translation.",
+          "required": false,
+      },
+      "AUTO_TRANSLATION": {
+          "description": "Whether to enable auto translation. To enable, you need to set GOOGLE_PROJECT_ID and GOOGLE_API_KEY. Set 'enable' to enable this feature.",
+          "required": false,
+          "value": "disable"
+      },
       "DEFAULT_SKILL": {
           "description": "Skill to be used when Bot cannot understand the intent.",
           "required": true,
           "value": "escalation"
-
       },
       "DEBUG": {
           "description": "Flag to switch debugging level and target scripts.",
           "required": false,
           "value": "bot-express:*"
-
       }
   },
   "keywords": ["line", "bot", "chatbot", "faq"]
