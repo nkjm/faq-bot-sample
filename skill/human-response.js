@@ -181,11 +181,13 @@ module.exports = class SkillHumanResponse {
 
         // -> Reply to administrator.
         tasks.push(bot.reply({
+            type: "text",
             text: "いただいた内容でユーザーへ返信しておきます。"
         }));
 
         // -> Reply to original user.
         tasks.push(bot.send(context.confirmed.user.id, {
+            type: "text",
             text: context.confirmed.answer
         }, context.confirmed.user.language));
 

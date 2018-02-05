@@ -51,7 +51,7 @@ module.exports = class SkillEscalation {
                     // We have translation so kindly add it to the messages for admin.
                     messages_to_admin.push({
                         type: "text",
-                        text: context.translation
+                        text: "翻訳: " + context.translation
                     })
                 }
 
