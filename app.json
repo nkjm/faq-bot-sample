@@ -2,6 +2,7 @@
   "name": "Self Learning FAQ Bot",
   "description": "A sample FAQ chatbot with automatic learning feature.",
   "repository": "https://github.com/nkjm/faq-bot-sample",
+  "logo": "https://raw.githubusercontent.com/nkjm/faq-bot-sample/master/image/logo.png",
   "env": {
       "LINE_CHANNEL_SECRET": {
           "description": "Secret key to validate the access to your webhook. You can find it in LINE Developers Console.",
@@ -25,11 +26,11 @@
       },
       "GOOGLE_PROJECT_ID": {
           "description": "Google Project Id for translation.",
-          "required": false,
+          "required": false
       },
       "GOOGLE_API_KEY": {
           "description": "Google API Key for translation.",
-          "required": false,
+          "required": false
       },
       "AUTO_TRANSLATION": {
           "description": "Whether to enable auto translation. To enable, you need to set GOOGLE_PROJECT_ID and GOOGLE_API_KEY. Set 'enable' to enable this feature.",
