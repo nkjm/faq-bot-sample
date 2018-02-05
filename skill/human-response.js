@@ -10,7 +10,7 @@ module.exports = class SkillHumanResponse {
 
     constructor(){
         this.required_parameter = {
-            user_id: {},
+            user: {},
             question: {},
             answer: {
                 message_to_confirm: {
@@ -185,9 +185,9 @@ module.exports = class SkillHumanResponse {
         }));
 
         // -> Reply to original user.
-        tasks.push(bot.send(context.confirmed.user_id, {
+        tasks.push(bot.send(context.confirmed.user.id, {
             text: context.confirmed.answer
-        }));
+        }, context.confirmed.user.language));
 
         return Promise.all(tasks).then((response) => {
             return resolve();

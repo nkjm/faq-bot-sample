@@ -2,7 +2,7 @@
 
 const debug = require("debug")("bot-express:skill");
 const LINE_ADMIN_USER_ID = process.env.LINE_ADMIN_USER_ID;
-const SUPPORTED_MESSAGE_TYPES = ["text", "sticker", "location"];
+const SUPPORTED_MESSAGE_TYPES = ["text"];
 Promise = require("bluebird");
 
 module.exports = class SkillEscalation {
@@ -13,7 +13,7 @@ module.exports = class SkillEscalation {
     finish(bot, event, context, resolve, reject){
 
         if (!SUPPORTED_MESSAGE_TYPES.includes(event.message.type)){
-            debug(`${event.message.type} message type is not supported in simple-forward skill. Supported message types are text and sticker message type. We just skip processing this event.`);
+            debug(`${event.message.type} message type is not supported. We just skip processing this event.`);
             return resolve();
         }
 
@@ -47,6 +47,14 @@ module.exports = class SkillEscalation {
                 delete orig_message.id;
                 messages_to_admin.push(orig_message);
 
+                if (context.translation){
+                    // We have translation so kindly add it to the messages for admin.
+                    messages_to_admin.push({
+                        type: "text",
+                        text: context.translation
+                    })
+                }
+
                 messages_to_admin.push({
                     type: "template",
                     altText: `さて、どうしますか？`,
@@ -61,11 +69,14 @@ module.exports = class SkillEscalation {
                                 intent: {
                                     name: "human-response",
                                     parameters: {
-                                        user_id: bot.extract_sender_id(),
-                                        question: orig_message.text
+                                        user: {
+                                            id: bot.extract_sender_id(),
+                                            language: context.sender_language
+                                        },
+                                        question: context.translation || orig_message.text
                                     }
                                 },
-                                language: context.sender_language
+                                language: "ja"
                             })
                         }]
                     }
