@@ -22,10 +22,8 @@
   },
   "homepage": "https://github.com/nkjm/faq-bot#readme",
   "dependencies": {
-    "@google-cloud/translate": "^1.1.0",
     "bot-express": "^0.1.19",
-    "express": "^4.16.2",
-    "mecabaas-client": "^1.0.3"
+    "express": "^4.16.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",

@@ -18,7 +18,7 @@ const should = chai.should();
 for (let messenger_option of messenger_options){
     let emu = new Emulator(messenger_option.name, messenger_option.options);
 
-    describe("Test robot-response skill from " + emu.messenger_type, function(){
+    describe("Test robot-response skill in English from " + emu.messenger_type, function(){
         let user_id = "robot-response-en";
 
         describe("Bot can recognize the question", function(){

@@ -18,7 +18,7 @@ const should = chai.should();
 for (let messenger_option of messenger_options){
     let emu = new Emulator(messenger_option.name, messenger_option.options);
 
-    describe("Test human-response skill from " + emu.messenger_type, function(){
+    describe("Test human-response skill in Japanese from " + emu.messenger_type, function(){
         let user_id = "human-response";
 
         describe("Select no for auto learning", function(){
