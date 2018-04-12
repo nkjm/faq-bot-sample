@@ -64,6 +64,7 @@ module.exports = class SkillEscalation {
                         actions: [{
                             type: "postback",
                             label: "回答する",
+                            displayText: "回答する",
                             data: JSON.stringify({
                                 _type: "intent",
                                 intent: {
