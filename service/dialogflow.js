@@ -44,25 +44,17 @@ module.exports = class ServiceDialogflow {
             parts: [{text: intent.training_phrase}]
         }]
 
-        const result = {
+        const new_intent = {
+            displayName: intent.name,
+            webhookState: 'WEBHOOK_STATE_DISABLED',
+            trainingPhrases: training_phrases,
             action: intent.action,
             messages: [{
                 text: {
                     text: [intent.text_response]
                 }
             }]
-        }
-
-        const new_intent = {
-            displayName: intent.name,
-            webhookState: 'WEBHOOK_STATE_DISABLED',
-            trainingPhrases: training_phrases,
-            mlEnabled: true,
-            action: result.action,
-            result: result
         };
-
-        debug(new_intent);
 
         const request = {
             parent: agent_path,
