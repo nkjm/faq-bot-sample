@@ -53,7 +53,7 @@ module.exports = class ServiceDialogflow {
             }]
         }
 
-        const intent = {
+        const new_intent = {
             displayName: intent.name,
             webhookState: 'WEBHOOK_STATE_DISABLED',
             trainingPhrases: training_phrases,
@@ -63,7 +63,7 @@ module.exports = class ServiceDialogflow {
 
         const request = {
             parent: agent_path,
-            intent: intennt
+            intent: new_intent
         }
 
         return intents_client.createIntent(request).then(responses => {
