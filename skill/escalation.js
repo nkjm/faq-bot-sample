@@ -3,7 +3,6 @@
 const debug = require("debug")("bot-express:skill");
 const LINE_ADMIN_USER_ID = process.env.LINE_ADMIN_USER_ID;
 const SUPPORTED_MESSAGE_TYPES = ["text"];
-Promise = require("bluebird");
 
 module.exports = class SkillEscalation {
     constructor(){

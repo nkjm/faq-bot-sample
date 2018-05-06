@@ -16,17 +16,17 @@
           "description": "Admin's LINE user id whom Bot escalates the question.",
           "required": true
       },
-      "DIALOGFLOW_CLIENT_ACCESS_TOKEN": {
-          "description": "Token to add to your API call for Dialogflow as user. You can find it in agent setting in Dialogflow Console.",
-          "required": true
-      },
-      "DIALOGFLOW_DEVELOPER_ACCESS_TOKEN": {
-          "description": "Token to add to your API call for Dialogflow as developer. You can find it in agent setting in Dialogflow Console.",
-          "required": true
-      },
       "GOOGLE_PROJECT_ID": {
-          "description": "Google Project Id for translation.",
-          "required": false
+          "description": "Project ID of Google Cloud Platform which can be found in Agent configuration page of Dialogflow.",
+          "required": true
+      },
+      "GOOGLE_CLIENT_EMAIL": {
+          "description": "Client Email of Google Cloud Platform which can be found in Agent configuration page of Dialogflow.",
+          "required": true
+      },
+      "GOOGLE_PRIVATE_KEY": {
+          "description": "Private Key of Google Cloud Platform which can be found in JSON formatted key file of Google Service Account.",
+          "required": true
       },
       "GOOGLE_API_KEY": {
           "description": "Google API Key for translation.",
