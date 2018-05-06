@@ -58,17 +58,17 @@ module.exports = class ServiceDialogflow {
             webhookState: 'WEBHOOK_STATE_DISABLED',
             trainingPhrases: training_phrases,
             mlEnabled: true,
+            action: result.action,
             result: result
         };
+
+        debug(new_intent);
 
         const request = {
             parent: agent_path,
             intent: new_intent
         }
 
-        return intents_client.createIntent(request).then(responses => {
-            debug('Created intent.');
-            logIntent(responses[0]);
-        });
+        return intents_client.createIntent(request);
     }
 }
