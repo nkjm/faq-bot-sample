@@ -3,7 +3,7 @@
 Promise = require("bluebird");
 const debug = require("debug")("bot-express:skill");
 const dialogflow = require("../service/dialogflow.js");
-const parse = require("../service/parser");
+const parser = require("../service/parser");
 const SKIP_INTENT_LIST = ["Default Fallback Intent", "Default Welcome Intent", "escalation", "human-response", "robot-response"];
 
 module.exports = class SkillHumanResponse {
@@ -32,19 +32,35 @@ module.exports = class SkillHumanResponse {
                     }
                 },
                 parser: (value, bot, event, context, resolve, reject) => {
-                    return parse.by_nlu_with_list(context.sender_language, "yes_no", value, ["はい","いいえ"], resolve, reject);
+                    return parser.parse("yes_no", value, resolve, reject);
                 },
                 reaction: (error, value, bot, event, context, resolve, reject) => {
                     if (error) return resolve();
                     if (value === "いいえ") return resolve();
 
                     // Ask if admin wants to create new intent or add this question to existing intent as new expression.
-                    bot.collect("is_new_intent");
+                    //bot.collect("is_new_intent");
+
+                    // Create new intent using question and add response using answer.
+                    return dialogflow.add_intent({
+                        name: context.confirmed.question,
+                        training_phrase: context.confirmed.question,
+                        action: "robot-response",
+                        text_response: context.confirmed.answer
+                    }).then((response) => {
+                        bot.queue({
+                            type: "text",
+                            text: "では新規Q&Aとして追加しておきます。"
+                        });
+                        return resolve();
+                    });
+
                     return resolve();
                 }
             }
         }
 
+        /*
         this.optional_parameter = {
             is_new_intent: {
                 message_to_confirm: {
@@ -61,19 +77,19 @@ module.exports = class SkillHumanResponse {
                     }
                 },
                 parser: (value, bot, event, context, resolve, reject) => {
-                    return parse.by_nlu_with_list(context.sender_language, "is_new_intent", value, ["新規","既存","わからない"], resolve, reject);
+                    return parser.parse("is_new_intent", value, resolve, reject);
                 },
                 reaction: (error, value, bot, event, context, resolve, reject) => {
                     if (error) return resolve();
 
                     if (value === "新規"){
                         // Create new intent using question and add response using answer.
-                        return dialogflow.add_intent(
-                            context.confirmed.question,
-                            "robot-response",
-                            context.confirmed.question,
-                            context.confirmed.answer
-                        ).then((response) => {
+                        return dialogflow.add_intent({
+                            name: context.confirmed.question,
+                            training_phrase: context.confirmed.question,
+                            action: "robot-response",
+                            text_response: context.confirmed.answer
+                        }).then((response) => {
                             bot.queue({
                                 type: "text",
                                 text: "では新規Q&Aとして追加しておきます。"
@@ -135,10 +151,12 @@ module.exports = class SkillHumanResponse {
                 }
             }
         }
+        */
 
         this.clear_context_on_finish = (process.env.BOT_EXPRESS_ENV === "test") ? false : true;
     }
 
+    /*
     _collect_intent_id(bot, context){
         return dialogflow.get_intent_list()
         .then((all_intent_list) => {
@@ -170,6 +188,7 @@ module.exports = class SkillHumanResponse {
             return;
         });
     }
+    */
 
     finish(bot, event, context, resolve, reject){
         // Promise List.

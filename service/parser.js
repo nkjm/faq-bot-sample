@@ -1,25 +1,62 @@
 "use strict";
 
-const debug = require('debug')('bot-express:service');
-const nlu = require("../service/dialogflow");
-const default_lang = "ja";
-Promise = require('bluebird');
+const debug = require("debug")("bot-express:service");
+const dialogflow = require("dialogflow");
+const sessions_client = new dialogflow.SessionsClient({
+    project_id: process.env.GOOGLE_PROJECT_ID,
+    credentials: {
+        client_email: process.env.GOOGLE_CLIENT_EMAIL,
+        private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n")
+    }
+})
+const session_path = sessions_client.sessionPath(process.env.GOOGLE_PROJECT_ID, process.env.GOOGLE_PROJECT_ID);
+const language = "ja";
+const structjson = require("./structjson");
 
 module.exports = class ServiceParser {
-    static by_nlu_with_list(lang = default_lang, parameter_name, value, acceptable_values, resolve, reject){
-        debug("Going to understand value by NLU.");
-        return nlu.query(lang, value).then((response) => {
-            if (response.status.code != 200){
-                debug(response.status.errorDetails);
-                return reject();
-            }
+    static extract(param_key, value){
+        if (typeof value != "string") return Promise.resolve(null);
+        if (!value) return Promise.resolve(null);
 
-            if (response.result.parameters[parameter_name]){
-                debug("Found entities.");
-                if (acceptable_values.includes(response.result.parameters[parameter_name])){
-                    debug("Accepted the value.");
-                    return resolve(response.result.parameters[parameter_name]);
+        return sessions_client.detectIntent({
+            session: session_path,
+            queryInput: {
+                text: {
+                    text: value,
+                    languageCode: language
                 }
+            }
+        }).then(responses => {
+            const parameters = structjson.jsonToStructProto(
+                structjson.structProtoToJson(responses[0].queryResult.parameters)
+            );
+
+            if (parameters.fields[param_key] && parameters.fields[param_key][parameters.fields[param_key].kind]){
+                return parameters.fields[param_key][parameters.fields[param_key].kind];
+            }
+            return null;
+        })
+    }
+
+    static parse(param_key, value, resolve, reject){
+        if (typeof value != "string") return reject();
+        if (!value) return reject();
+
+        return sessions_client.detectIntent({
+            session: session_path,
+            queryInput: {
+                text: {
+                    text: value,
+                    languageCode: language
+                }
+            }
+        }).then(responses => {
+            const parameters = structjson.jsonToStructProto(
+                structjson.structProtoToJson(responses[0].queryResult.parameters)
+            );
+
+            if (parameters.fields[param_key] && parameters.fields[param_key][parameters.fields[param_key].kind]){
+                return resolve(parameters.fields[param_key][parameters.fields[param_key].kind]);
             }
             return reject();
         })

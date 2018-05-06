@@ -22,8 +22,10 @@
   },
   "homepage": "https://github.com/nkjm/faq-bot#readme",
   "dependencies": {
-    "bot-express": "^0.1.20",
-    "express": "^4.16.2"
+    "bot-express": "^0.3.1",
+    "dialogflow": "^0.3.0",
+    "express": "^4.16.2",
+    "grpc": "^1.11.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
